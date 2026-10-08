@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Khaula, a little sorry 💛</title>
+<style>
+:root{--bg:#3b0a45;--card:rgba(255,255,255,.14);--ink:#ffffff;--soft:#f3c9dc;--pri:#ff5e8a;--pri2:#ffa94d;--sh:0 12px 36px rgba(0,0,0,.35);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;margin:0}
+body{background:linear-gradient(160deg,#3b0a45 0%,#8e2c6b 55%,#e0557a 100%) fixed;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;display:flex;align-items:center;justify-content:center}
+#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.h{position:absolute;bottom:-40px;opacity:.65;animation:up linear forwards}
+@keyframes up{to{transform:translateY(-110vh) rotate(30deg);opacity:0}}
+.wrap{position:relative;width:100%;max-width:420px;padding:20px;box-sizing:border-box}
+.card{background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.25);border-radius:26px;box-shadow:var(--sh);padding:30px 22px;text-align:center;animation:pop .5s ease}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
+.big{font-size:64px;line-height:1;margin-bottom:10px}
+h1{font-size:26px;margin:6px 0 10px}
+p{font-size:17px;line-height:1.55;margin:8px 0;color:var(--ink)}
+.sm{font-size:14px;color:var(--soft)}
+button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:14px 26px;margin:8px 4px;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--pri),var(--pri2));box-shadow:0 6px 16px rgba(255,107,139,.35);transition:transform .15s}
+button:active{transform:scale(.95)}
+button.alt{background:transparent;color:var(--ink);box-shadow:none;border:2px solid rgba(255,255,255,.7)}
+.dots{margin-top:14px}
+.dots i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--soft);opacity:.35;margin:0 3px}
+.dots i.on{background:var(--pri);opacity:1}
+#nope{position:relative}
+.hide{display:none}
+#cv{position:fixed;inset:0;pointer-events:none;z-index:5}
+.cheer{min-height:70px;display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+<div id="hearts"></div>
+<canvas id="cv"></canvas>
+<div class="wrap">
+
+<div class="card" id="s0">
+<div class="big">💌</div>
+<h1>Khaula...</h1>
+<p>I made a little surprise just for you.</p>
+<p class="sm">From Sufyan, only for you</p>
+<button onclick="go(1)">Open it ✨</button>
+</div>
+
+<div class="card hide" id="s1">
+<div class="big" id="e1">🥺</div>
+<h1 id="t1"></h1>
+<p id="m1"></p>
+<button onclick="nxt()" id="nb">Next</button>
+<div class="dots" id="dots"></div>
+</div>
+
+<div class="card hide" id="s2">
+<div class="big">🙏</div>
+<h1>So tell me...</h1>
+<p>Will you forgive me?</p>
+<button onclick="yes()">Yes, forgiven 💛</button>
+<button class="alt" id="nope" onmouseover="dodge()" ontouchstart="dodge(event)" onclick="dodge(event)">No</button>
+<p class="sm" id="hint"></p>
+</div>
+
+<div class="card hide" id="s3">
+<div class="big">🎉</div>
+<h1>Yayyy! Thank you Khaula!</h1>
+<p>You really are the best friend ever. Now let's bring that smile back 😊</p>
+<div class="cheer"><p id="ch"><b>Tap the button below</b></p></div>
+<button onclick="cheer()">Make me smile 😄</button>
+<button class="alt" onclick="wa()">Tell Sufyan 💬</button>
+</div>
+
+</div>
+<script>
+var steps=[
+["🥺","First of all, I'm sorry","Whatever happened, I hate that you were upset. It was my mistake, and I truly regret it."],
+["💭","What you are to me","You are not just a friend, you are my bestie. A day feels incomplete without talking to you, and I can't stand seeing you sad."],
+["🤝","A promise","From now on I will be more careful, I will listen properly, and I will never hurt you again. Pinky promise."]
+];
+var i=0,cur=0;
+function show(n){for(var k=0;k<4;k++)document.getElementById("s"+k).classList.toggle("hide",k!==n);cur=n}
+function go(n){show(n);if(n===1){i=0;render()}}
+function render(){var s=steps[i];e1.textContent=s[0];t1.textContent=s[1];m1.textContent=s[2];
+nb.textContent=i===steps.length-1?"One last question":"Next";
+dots.innerHTML=steps.map(function(_,k){return '<i class="'+(k===i?'on':'')+'"></i>'}).join("")}
+function nxt(){if(i<steps.length-1){i++;render()}else show(2)}
+var tries=0,hints=["Oops, the button ran away 😅","Try to catch it 😂","The No button is shy","Just say yes, please 🥹","Why so angry 😭"];
+function dodge(e){if(e&&e.preventDefault)e.preventDefault();var b=document.getElementById("nope");
+var x=(Math.random()-.5)*200,y=(Math.random()-.5)*160;b.style.transform="translate("+x+"px,"+y+"px)";
+hint.textContent=hints[tries%hints.length];tries++;
+if(tries>5){b.textContent="Yes 😅";b.onclick=yes;b.onmouseover=null;b.ontouchstart=null;b.style.transform="none"}}
+function yes(){show(3);boom()}
+var jokes=["You are so great that even the WiFi gives you a stronger signal 📶",
+"Your smile can turn dark mode into light mode ☀️",
+"With you around, life runs on 5G instead of 2G 😂",
+"Only two things in this world are lovely: chai and Khaula ☕💛",
+"You look cute even when you're angry, but even cuter when you smile 😊",
+"Making Khaula laugh is easy: one samosa and a few of Sufyan's silly moments 🥟",
+"You are the best update of my life, with zero bugs (except a little anger) 😜"];
+var ji=0;
+function cheer(){document.getElementById("ch").textContent=jokes[ji%jokes.length];ji++;boom(40)}
+function wa(){var t="I forgive you Sufyan! Now you owe me a treat 😄💛";window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank")}
+function heart(){var d=document.createElement("div");d.className="h";d.textContent=["💛","💖","✨","🌸"][Math.floor(Math.random()*4)];
+d.style.left=Math.random()*100+"%";d.style.fontSize=(14+Math.random()*22)+"px";d.style.animationDuration=(6+Math.random()*6)+"s";
+hearts.appendChild(d);setTimeout(function(){d.remove()},12000)}
+setInterval(heart,700);
+var cv=document.getElementById("cv"),cx=cv.getContext("2d"),ps=[],run=false;
+function size(){cv.width=innerWidth;cv.height=innerHeight}size();addEventListener("resize",size);
+function boom(n){n=n||120;for(var k=0;k<n;k++)ps.push({x:innerWidth/2,y:innerHeight/2,vx:(Math.random()-.5)*14,vy:Math.random()*-14-2,c:"hsl("+Math.random()*360+",90%,60%)",s:4+Math.random()*5,l:90});if(!run){run=true;tick()}}
+function tick(){cx.clearRect(0,0,cv.width,cv.height);ps=ps.filter(function(p){return p.l>0});
+ps.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.4;p.l--;cx.fillStyle=p.c;cx.fillRect(p.x,p.y,p.s,p.s)});
+if(ps.length)requestAnimationFrame(tick);else run=false}
+</script>
+</body>
+</html>
